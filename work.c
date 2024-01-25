@@ -170,6 +170,27 @@ int close(TnOVnC* tnOVnC) {
     tnOVnC = NULL;
     return 0;
 }
+int supprimerEtudiant(TnOVnC* tnOVnC, int matricule) {
+    bool trouve;
+    Etudiant etudiant;
+    
+    // Rechercher l'étudiant par matricule
+    rechercheEtudiant(tnOVnC, matricule, &trouve, &etudiant);
+
+    if (trouve) {
+        // Marquer l'étudiant comme supprimé
+        etudiant.efface = true;
+
+        // Mettre à jour le fichier avec l'étudiant marqué comme supprimé
+        ecrireEtudiant(tnOVnC, &etudiant, matricule, tnOVnC->header.adrLastBloc);
+
+        printf("Étudiant supprimé avec succès\n");
+        return 0;
+    } else {
+        printf("Étudiant non trouvé, suppression impossible\n");
+        return -1;
+    }
+}
 
 int GetHeader(TnOVnC* tnOVnC, int i) {
     if (i == 1) return tnOVnC->header.adrLastBloc;
